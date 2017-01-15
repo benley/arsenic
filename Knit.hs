@@ -1,3 +1,8 @@
+#!/usr/bin/env stack
+{- stack --resolver lts-7.9 --install-ghc
+    runghc
+-}
+
 -- Authors:
 --   Mike MacHenry    https://github.com/mmachenry
 --   Benjamin Staffin https://github.com/benley
