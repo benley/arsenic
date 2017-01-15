@@ -100,28 +100,11 @@ parseLine = do
       "rs" -> RightSide rowN cmds
       "ws" -> WrongSide rowN cmds
 
-parseFile = parseLine `sepBy` char '\n'
+parseFile :: Parser [Row]
+parseFile = (parseLine `sepEndBy` char '\n') <* eof
 
-readRow :: String -> Row
-readRow input =
-    case runParser parseLine "knitting" input of
-      Right v -> v
-      Left err -> error (show err)
-
-readRows :: String -> [Row]
-readRows input = let inlines = lines input in
-  map readRow inlines
-
-justparse :: String -> [Row]
-justparse input =
-  case runParser (many parseLine) "knitting" input of
+justParse :: FilePath -> String -> [Row]
+justParse filename input =
+  case runParser parseFile filename input of
     Right v -> v
-    Left err -> error (show err)
-
-foo = do
-  f <- readFile "new.txt"
-  let l = lines f
-  forM_ l $ \line-> do
-    putStrLn line
-    let row = readRow line
-    print row
+    Left err -> error (parseErrorPretty err)

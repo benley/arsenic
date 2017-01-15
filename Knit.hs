@@ -12,15 +12,15 @@ import KnitParse
 
 -- For the right side
 cmd2Str cmd = case cmd of
-  K -> "|"
-  K2Tog -> "/"
-  K3Tog -> "/"
-  P -> "-"
-  P2Tog -> "/"
+  K       -> "|"
+  K2Tog   -> "/"
+  K3Tog   -> "/"
+  P       -> "-"
+  P2Tog   -> "/"
   Slppsso -> "/"
   Slkpsso -> "\\"
-  Ssk -> "\\"
-  Yo -> "O"
+  Ssk     -> "\\"
+  Yo      -> "O"
 
 runKnit :: [Row] -> [[Command]] -> [String]
 runKnit [] result = map (concatMap cmd2Str) result
@@ -41,7 +41,7 @@ test = [
   RightSide 2 (replicate 121 P),
   WrongSide 3 (replicate 4 K ++ replicate 113 P ++ replicate 4 K),
   RightSide 4 (
-    (replicate 4 P)
+       (replicate 4 P)
     ++ (replicate 12 K)
     ++ [Ssk, Yo, K,K,K, Ssk, Yo, K,K,K, Ssk, Yo, K,K,K,K,K, Ssk, Yo]
     ++ (replicate 8 K)
@@ -59,10 +59,7 @@ test = [
 main = do
   [filename] <- getArgs
   f <- readFile filename
-  let l = lines f
-  let rows = map readRow l
-  let output = runKnit rows []
-  mapM_ putStrLn output
+  mapM_ putStrLn $ runKnit (justParse filename f) []
 
 {-
 file = [
