@@ -2,6 +2,7 @@
 --   Mike MacHenry    https://github.com/mmachenry
 --   Benjamin Staffin https://github.com/benley
 
+import System.Environment (getArgs)
 import KnitParse
 
 -- For the right side
@@ -51,7 +52,8 @@ test = [
   ]
 
 main = do
-  f <- readFile "new.txt"
+  [filename] <- getArgs
+  f <- readFile filename
   let l = lines f
   let rows = map readRow l
   let output = runKnit rows []
