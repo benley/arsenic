@@ -1,6 +1,6 @@
 module KnitParse where
 
-import Control.Monad (void)
+import Control.Monad (void, forM_)
 import Text.Megaparsec
 import Text.Megaparsec.String
 import qualified Text.Megaparsec.Lexer as L
@@ -66,7 +66,7 @@ twiceExpr :: Parser [Command]
 twiceExpr = (concat . replicate 2) <$> (parenExpr <* ktoken "twice")
 
 parseExpr :: Parser [Command]
-parseExpr = choice [ starsExpr
+parseExpr = choice [starsExpr
                    , twiceExpr
                    , ktoken "yo"  >> return [Yo]
                    , ktoken "ssk" >> return [Ssk]
@@ -76,9 +76,6 @@ parseExpr = choice [ starsExpr
 
 parseMany :: Parser [Command]
 parseMany = concat <$> (parseExpr `sepBy` ktoken ",")
-
-parseManyAndStars :: Parser [Command]
-parseManyAndStars = concat <$> some (parseMany <|> starsExpr)
 
 inParens :: Parser a -> Parser a
 inParens p = ktoken "(" *> p <* ktoken ")"
@@ -91,7 +88,6 @@ starsExpr = do
     repN <- read <$> lexeme (some digitChar)
     ktoken "x"
     return (concat $ replicate repN cmds)
-
 
 parseLine :: Parser Row
 parseLine = do
@@ -117,6 +113,15 @@ readRows input = let inlines = lines input in
   map readRow inlines
 
 justparse :: String -> [Row]
-justparse input = case runParser (many parseLine) "knitting" input of
-                    Right v -> v
-                    Left err -> error (show err)
+justparse input =
+  case runParser (many parseLine) "knitting" input of
+    Right v -> v
+    Left err -> error (show err)
+
+foo = do
+  f <- readFile "new.txt"
+  let l = lines f
+  forM_ l $ \line-> do
+    putStrLn line
+    let row = readRow line
+    print row
