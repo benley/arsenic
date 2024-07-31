@@ -1,6 +1,9 @@
 # arsenic
 parser/compiler for knitting patterns
 
+This was part of a solution to a 2017 MIT Mystery Hunt puzzle called [Arsenic](https://puzzles.mit.edu/2017/puzzle/arsenic.html).
+([solution page](https://puzzles.mit.edu/2017/solution/arsenic.html))
+
 ```
 ----|O|||/O\O\|||O|--|\O\O|--|||/|||O|O|||\|||----||||||||||O|O||/----|/O||/O|--\O\OO/O/--|O\O||||--/||O||O\|/O||O||\----
 ----|||||||||||||||--|O/O/|--|||||||||||||||||--||||||||||||||||||||---O/--O/---||||||||--||||||||--|||||||||||||||||----
